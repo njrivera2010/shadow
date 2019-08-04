@@ -1,0 +1,392 @@
+<html>
+
+
+  <script>
+    document.onkeydown = checkKey;
+    var posx = 110;
+    var posy = 110;
+    var MLGbuilds = 0
+    var reckedx = 750
+    var reckedy = 30
+    var eh = 30
+    var ph = 100
+    var flash = 0
+    var blocks = Array();
+    for(i = 0; i < 1000; i += 20) {
+      for(j = 260; j < 520; j += 20) {
+
+        blocks.push([i, j]);
+      }
+    }
+
+    function checkKey(e) {
+      if (e.key == 'ArrowRight' ) {
+        if(posx < 980) {
+          obstacle = obstacleCheck(posx + 20,posy)
+           if (!obstacle) {
+          posx = posx + 20;
+        }
+          
+        }
+      }
+      
+      if (e.key == 'ArrowLeft' ) {
+        if(posx > 10  ) {
+         obstacle = obstacleCheck(posx - 20 ,posy)
+          if (!obstacle) {
+        
+          posx = posx - 20; }
+                    
+        }
+      }
+
+      if (e.key == 'ArrowUp' ) {
+        if (posy > 10) {
+          obstacle = obstacleCheck(posx, posy - 20)
+          if (!obstacle) {
+           posy = posy - 20;
+          }
+        }
+      }
+
+      if (e.key == 'ArrowDown' ) {
+        if (posy < 510) {
+          obstacle = obstacleCheck(posx, posy+20);
+          if (!obstacle) {
+            posy = posy + 20;
+          }
+        }
+      }
+
+      if (e.key == 'm') {
+        x = posx - 10;
+        y = posy + 10;
+        for (i = 0; i < blocks.length; i++) {
+          block = blocks[i];
+          if (block[0] == x && block[1] == y) {
+            blocks.splice(i,1);
+            MLGbuilds = MLGbuilds + 1
+            break;
+          }
+        }
+      }
+      if (e.key == 'b') {
+        x = posx - 10;
+        y = posy + 10;
+
+        if (MLGbuilds > 0 && posy > 10) {
+          obstacle = obstacleCheck(posx, posy-20)
+          if (!obstacle) {
+            MLGbuilds = MLGbuilds - 1
+            blocks.push([x, y - 20]);
+            posy = posy - 20
+          }
+        }
+      }
+      if (e.key == ' ') {
+        if (Math.abs(reckedx - posx) < 30 && Math.abs(reckedy - posy) < 30) {
+          eh = eh - 10
+        }
+      }
+
+      // drawAll();
+    }
+
+    function obstacleCheck(x, y) {
+      x = x - 10;
+      y = y - 10;
+      obstacle = false;
+      for (i = 0;i < blocks.length ;i++) {
+        block = blocks[i];
+        if (x == block[0] && y == block[1]) {
+          obstacle = true;
+          break;
+        }
+      }
+      return obstacle;
+    }
+
+    function drawBlocks() {
+      context.fillStyle = 'grey';
+      for (i = 0; i < blocks.length; i++) {
+        block = blocks[i];
+        context.fillRect(block[0],block[1], 20,20);
+      }
+    }
+
+    function drawInventory() {
+      context.fillStyle = "#0eded9";
+      context.fillRect(1000,0, 5,520);
+
+      context.fillStyle = 'grey';
+      context.fillRect(1100,10,20,20)
+      context.fillStyle = 'green';
+      context.font = "18px sans-serif";
+      context.fillText(MLGbuilds + " X", 1050, 30);
+
+      if(eh > 0 ) {
+        context.fillText(eh,reckedx - 10,reckedy - 10)
+      }
+
+      context.fillText(ph,1050,345  )
+
+      context.fillStyle = "yellow";
+      context.beginPath();
+      context.arc(1100, 425, 75, 0, 2 * (ph/100.0) * Math.PI);
+      context.fill();
+    }
+
+    function drawHeart(x, y) {
+      // context.fillStyle = "#FF0000";
+      // context.beginPath();
+      // context.arc(posx, posy, 10, 0, 2 * Math.PI);
+      // context.fill();
+
+      // img = new Image();
+      // img.src = './thistimeitstherealheart.png'
+      // context.drawImage(img,posx-18,posy-20, 40,40)
+
+      context.fillStyle = "black";
+      pixels = [
+        {x: 2, y:1 },
+        {x: 3, y:1 },
+        {x: 6, y:1 },
+        {x: 7, y:1 },
+
+        {x: 1, y:2 },
+        {x: 2, y:2 },
+        {x: 3, y:2 },
+        {x: 4, y:2 },
+        {x: 5, y:2 },
+        {x: 6, y:2 },
+        {x: 7, y:2 },
+        {x: 8, y:2 },
+
+        {x: 1, y: 3},
+        {x: 2, y: 3},
+        {x: 3, y: 3},
+        {x: 4, y: 3},
+        {x: 5, y: 3},
+        {x: 6, y: 3},
+        {x: 7, y: 3},
+        {x: 8, y: 3},
+
+        {x: 1, y: 4},
+        {x: 2, y: 4},
+        {x: 3, y: 4},
+        {x: 4, y: 4},
+        {x: 5, y: 4},
+        {x: 6, y: 4},
+        {x: 7, y: 4},
+        {x: 8, y: 4},
+
+        {x: 2, y: 5},
+        {x: 3, y: 5},
+        {x: 4, y: 5},
+        {x: 5, y: 5},
+        {x: 6, y: 5},
+        {x: 7, y: 5},
+
+        {x: 2, y: 6},
+        {x: 3, y: 6},
+        {x: 4, y: 6},
+        {x: 5, y: 6},
+        {x: 6, y: 6},
+        {x: 7, y: 6},
+        
+        {x: 3, y: 7},
+        {x: 4, y: 7},
+        {x: 5, y: 7},
+        {x: 6, y: 7},
+        
+        {x: 4, y: 8},
+        {x: 5, y: 8},
+      ];
+      s = 2;
+      for(var i = 0; i < pixels.length; i++) {
+      context.fillRect((x-10) + pixels[i].x * s, (y-10)+pixels[i].y * s, s, s);
+      }
+
+      drawSword(x+15,y);
+    }
+
+    function drawSword(x, y) {
+      context.fillStyle = "gray";
+      pixels = [
+        {x: 7, y:-2 , color:'red'},
+        {x: 8, y:-2 , color:'red'},
+        {x: 7, y:-1 , color:'red'},
+        {x: 8, y:-1 , color:'red'},
+
+        {x: 7, y:0 , color:'red'},
+        {x: 8, y:0 , color:'red'},
+        {x: 7, y:1 , color:'red'},
+        {x: 8, y:1 , color:'red'},
+
+        {x: 7, y:2 , color:'red'},
+        {x: 8, y:2 , color:'red'},
+        {x: 7, y:3 , color:'red'},
+        {x: 8, y:3 , color:'red'},
+
+        {x: 7, y:4 , color:'red'},
+        {x: 8, y:4 , color:'red'},
+        {x: 7, y:5 , color:'red'},
+        {x: 8, y:5 , color:'red'},
+
+        {x: 4, y: 6, color:'black'},
+        {x: 6, y: 6, color:'gold'},
+        {x: 7, y: 6, color:'gold'},
+        {x: 8, y: 6, color:'gold'},
+        {x: 9, y: 6, color:'gold'},
+        {x: 11, y: 6, color:'black'},
+        {x: 4, y: 7, color:'black'},
+        {x: 6, y: 7, color:'gold'},
+        {x: 7, y: 7, color:'gold'},
+        {x: 8, y: 7, color:'gold'},
+        {x: 9, y: 7, color:'gold'},
+        {x: 11, y: 7, color:'black'},
+        
+        {x: 5, y: 8, color:'gold'},
+        {x: 6, y: 8, color:'gold'},
+        {x: 7, y: 8, color:'gold'},
+        {x: 8, y: 8, color:'gold'},
+        {x: 9, y: 8, color:'gold'},
+        {x: 10, y: 8, color:'gold'},
+        {x: 5, y: 9, color:'gold'},
+        {x: 6, y: 9, color:'gold'},
+        {x: 7, y: 9, color:'gold'},
+        {x: 8, y: 9, color:'gold'},
+        {x: 9, y: 9, color:'gold'},
+        {x: 10, y: 9, color:'gold'},
+        
+        {x: 7, y: 10, color: 'brown'},
+        {x: 8, y: 10, color: 'brown'},
+        {x: 7, y: 11, color: 'brown'},
+        {x: 8, y: 11, color: 'brown'},
+        
+        {x: 7, y: 12, color: 'brown'},
+        {x: 8, y: 12, color: 'brown'},
+        {x: 7, y: 13, color: 'brown'},
+        {x: 8, y: 13, color: 'brown'},
+        
+        // {x: 3, y: 7},
+        // {x: 4, y: 7},
+      ];
+      s = 1;
+      for(var i = 0; i < pixels.length; i++) {
+        context.fillStyle = pixels[i].color || 'gray';
+        context.fillRect((x-10) + pixels[i].x * s, (y-10)+pixels[i].y * s, s, s);
+      }
+    }
+
+    function drawenemy(x, y) {
+      if (eh <= 0) {
+      return
+        
+      }
+      context.fillStyle = "black";
+      context.beginPath();
+      context.arc(x, y, 10, 0, 2 * Math.PI);
+      context.fill();
+      context.fillStyle = 'red';
+      context.beginPath();
+      context.arc(x-4, y, 3, 0, 2 * Math.PI);
+      context.fill();
+      context.beginPath();
+      context.arc(x+4, y, 3, 0, 2 * Math.PI);
+      context.fill();
+
+      context.strokeRect(reckedx-300,reckedy-300,600,600);
+    }
+    function clockTick() {
+      setTimeout(function() {
+
+        var enemyStep;
+        if (
+            (reckedx > posx && reckedx - posx < 300) ||
+            (reckedx < posx && posx - reckedx < 300) ||
+            (reckedy > posy && reckedy - posy > 300) ||
+            (reckedy < posy && posy - reckedy > 300)
+           ) {
+          //enemy close
+          enemyStep = 10;
+          if (reckedx > posx) {
+            reckedx -= enemyStep;
+          } else {
+            reckedx += enemyStep;
+          }
+          if (reckedy > posy) {
+            reckedy -= enemyStep;
+          } else {
+            reckedy += enemyStep;
+          }
+        } else {
+          //enemy far
+          enemyStep = 1;
+          if (Math.random() > 0.5) {
+
+            //check if enemy is at the edge
+            if (reckedx < 980) {
+              //check if enemy is about to hit a block
+              if(!obstacleCheck(reckedx+enemyStep, reckedy) ) {
+                reckedx = reckedx + enemyStep
+              }
+            }
+          } else {
+            if(reckedx > 0 ) {
+              reckedx = reckedx - enemyStep
+            }
+          }
+          if (Math.random() > 0.5) {
+            if (reckedy < 520){
+            reckedy = reckedy + enemyStep}
+          } else {
+            if (reckedy > 0){
+            reckedy = reckedy - enemyStep}
+          }
+        }
+        // collision detection
+        if (
+          ((reckedx > posx && reckedx - posx < 10) || (posx > reckedx && posx - reckedx < 10)) &&
+          ((reckedy > posy && reckedy - posy < 10) || (posy > reckedy && posy - reckedy < 10))
+
+          ) {
+          if (flash == 0) {
+          if(eh > 0 ) {
+          ph = ph - 10
+            flash = 20
+                
+            
+            }
+          }
+        }
+
+        if (flash > 0) {
+          flash = flash - 1
+        }
+
+        drawAll();
+        clockTick();dr
+      }, 50)
+    }
+    function drawAll() {
+      context.clearRect(0,0, 1200, 520);
+      drawBlocks();
+      drawInventory();
+      drawHeart(posx, posy);
+      drawenemy(reckedx, reckedy);
+    }
+  </script>
+
+
+<body bgcolor="grey">
+  <canvas style="background:white;margin:0;padding:0;position:relative;left:50px;top:50px;" id="game" width="1200" height="520"></canvas>
+
+  <script>
+    game = document.getElementById('game');
+    context = game.getContext("2d");
+    drawAll();
+    clockTick();
+  </script>
+</body>
+</html>
