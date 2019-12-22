@@ -12,6 +12,9 @@
     var ph = 100
     var flash = 0
     var blocks = Array();
+    var freezedown = 0;
+    var mode = 'test';
+
     for(i = 0; i < 1000; i += 20) {
       for(j = 260; j < 520; j += 20) {
 
@@ -84,12 +87,15 @@
         }
       }
       if (e.key == ' ') {
-        if (Math.abs(reckedx - posx) < 30 && Math.abs(reckedy - posy) < 30) {
-          eh = eh - 10
+        if (freezedown == 0) {
+          if (Math.abs(reckedx - posx) < 30 && Math.abs(reckedy - posy) < 30) {
+            if (eh >0) {
+              eh = eh - 10
+              freezedown = 100              
+            }
+          }
         }
       }
-
-      // drawAll();
     }
 
     function obstacleCheck(x, y) {
@@ -296,17 +302,23 @@
       context.arc(x+4, y, 3, 0, 2 * Math.PI);
       context.fill();
 
-      context.strokeRect(reckedx-300,reckedy-300,600,600);
+      context.strokeRect(reckedx-200,reckedy-200,400,400);
     }
+
+    function drawCooldown() {
+      context.fillStyle = "orange"
+      context.fillRect(600,510,freezedown,10)
+    }
+
     function clockTick() {
       setTimeout(function() {
 
         var enemyStep;
         if (
-            (reckedx > posx && reckedx - posx < 300) ||
-            (reckedx < posx && posx - reckedx < 300) ||
-            (reckedy > posy && reckedy - posy > 300) ||
-            (reckedy < posy && posy - reckedy > 300)
+            (reckedx > posx && reckedx - posx < 200) ||
+            (reckedx < posx && posx - reckedx < 200) ||
+            (reckedy > posy && reckedy - posy > 200) ||
+            (reckedy < posy && posy - reckedy > 200)
            ) {
           //enemy close
           enemyStep = 10;
@@ -365,8 +377,14 @@
           flash = flash - 1
         }
 
+        if (freezedown > 0) {
+          freezedown = freezedown - 3
+          if(freezedown <0)
+            freezedown = 0
+        }
+
         drawAll();
-        clockTick();dr
+        clockTick();
       }, 50)
     }
     function drawAll() {
@@ -375,7 +393,8 @@
       drawInventory();
       drawHeart(posx, posy);
       drawenemy(reckedx, reckedy);
-    }
+      drawCooldown()
+    } 
   </script>
 
 
