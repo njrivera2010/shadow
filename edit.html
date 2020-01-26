@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <script src="edit.js" >
+    </script>
+  </head>
+
+  <body bgcolor="black">
+    <canvas style="background:white;margin:0;padding:0;position:relative;left:50px;top:50px;" id="game" width="1200" height="520"></canvas>
+
+    <script>
+      game = document.getElementById('game');
+      context = game.getContext("2d");
+
+      var pixels = [];
+      var drag = [];
+      var mousedown = false;
+      game.addEventListener('mousedown', function(event) {
+        mousedown = true;
+        drag = [];
+        pixels.push(drag);
+      });
+      game.addEventListener('mouseup', function(event) {
+        mousedown = false;
+      });
+      game.addEventListener('mousemove', function(event) {
+        if (mousedown) {
+          drag.push([event.x-60, event.y-60]);
+        }
+      });
+
+      clockTick();
+    </script>
+  </body>
+</html>

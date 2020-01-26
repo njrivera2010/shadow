@@ -14,6 +14,7 @@
     var blocks = Array();
     var freezedown = 0;
     var mode = 'test';
+    var viewPort = [0,0];
 
     for(i = 0; i < 1000; i += 20) {
       for(j = 260; j < 520; j += 20) {
@@ -305,6 +306,22 @@
       context.strokeRect(reckedx-200,reckedy-200,400,400);
     }
 
+    function drawRocks() {
+      context.fillStyle = 'brown';
+      rocks = [
+        [3,12],
+        [7,12],
+        [16,12],
+        [21,12],
+        [21,11],
+      ];
+      for(i = 0; i < rocks.length; i++) {
+        x = rocks[i][0];
+        y = rocks[i][1];
+        context.fillRect((x*20), (y*20), 20,20);
+      }
+    }
+
     function drawCooldown() {
       context.fillStyle = "orange"
       context.fillRect(600,510,freezedown,10)
@@ -383,17 +400,19 @@
             freezedown = 0
         }
 
+        context.translate(500,500);
         drawAll();
         clockTick();
       }, 50)
     }
-    function drawAll() {
+    function drawAll(x, y, w, h) {
       context.clearRect(0,0, 1200, 520);
       drawBlocks();
       drawInventory();
       drawHeart(posx, posy);
       drawenemy(reckedx, reckedy);
-      drawCooldown()
+      drawCooldown();
+      drawRocks();
     } 
   </script>
 
