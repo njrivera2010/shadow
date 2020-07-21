@@ -1,6 +1,8 @@
 document.onkeydown = checkKey;
 document.onkeyup = keyUp;
 
+var stage = 0;
+
 var hero = {
   pos: {x: 110, y: 250},
   speed: {x: 0, y: 0},
@@ -9,8 +11,9 @@ var hero = {
   flash: 0,
   freezedown: 0,
   burst: {r: 0, x: 0, y: 0},
+  degree: 0,
 }
-var MLGbuilds = 0
+var MLGbuilds = 100;
 
 var enemy = {
   pos: {x: 750, y: 30},
@@ -22,16 +25,18 @@ var blocks = Array();
 var mode = 'test';
 var viewPort = [-400,0];
 
+var winx = 150
+var winy = 250
 for(i = 0; i < 1000; i += 20) {
   for(j = 260; j < 520; j += 20) {
     blocks.push([i, j]);
   }
 }
 
-console.log('bricks')
-console.log(bricks.length)
+// console.log('bricks')
+// console.log(bricks.length)
 for(i = 0; i < bricks.length; i++) {
-  console.log([bricks[i][0]*20, bricks[i][1]*20])
+  // console.log([bricks[i][0]*20, bricks[i][1]*20])
   blocks.push([bricks[i][0]*20 - 200, bricks[i][1]*20 - 800])
 }
 
@@ -131,6 +136,21 @@ function mineCheck(x, y) {
   return obstacle;
 }
 
+function drawWin() {
+  context.fillStyle = "yellow"
+  context.fillRect(winx-viewPort[0],winy-viewPort[1],40,40)
+}
+
+function drawMap() {
+  context.fillStyle = "black"
+  context.strokeRect(1010,400,180,90)
+  for(i=0; i<blocks.length; i++) {
+    bx = blocks[i][0] + 0.0;
+    by = blocks[i][1] + 0.0;
+    context.fillRect(1010+bx/100.0,400+by/100.0,1,1)
+  }
+}
+
 function drawBlocks() {
   context.fillStyle = 'grey';
   for (i = 0; i < blocks.length; i++) {
@@ -152,7 +172,10 @@ function drawInventory() {
   context.font = "18px sans-serif";
   context.fillText(MLGbuilds + " X", 1050, 30);
 
-  context.fillText(hero.health, 1050,345)
+  context.fillText("HP " + hero.health, 1050,345)
+  
+  context.fillText("x " + (winx - hero.pos.x), 1050,365)
+  context.fillText("y " + (winy - hero.pos.y), 1050,385)
 }
 
 function drawHero() {
@@ -162,6 +185,17 @@ function drawHero() {
   context.beginPath();
   context.arc(hero.pos.x-viewPort[0], hero.pos.y-viewPort[1], 10, 0, 2 * Math.PI);
   context.fill();
+
+  context.fillStyle = 'black';
+  context.beginPath();
+
+  for (r = 0; r <= 9; r++) {
+    context.arc(
+      hero.pos.x-viewPort[0]+(r*Math.cos(hero.degree)), 
+      hero.pos.y-viewPort[1]+(r*Math.sin(hero.degree)), 
+      1, 0, 2 * Math.PI);
+    context.fill();
+  }
 
   if (hero.burst.r) {
     context.fillStyle = 'yellow';
@@ -411,6 +445,13 @@ function clockTick() {
       }
     }
 
+    // player-exit collision detection
+    if (
+        (Math.abs(exitx - (hero.pos.x)) < 10) && (Math.abs(exity - (hero.pos.y)) < 10)
+      ) {
+        console.log('cleared level')
+    }
+
     if (hero.flash > 0) {
       hero.flash = hero.flash - 1
     }
@@ -430,6 +471,11 @@ function clockTick() {
       obstacle = obstacleCheck(newpos,hero.pos.y);
       if (!obstacle) {
         hero.pos.x = hero.pos.x = newpos;
+        if (hero.speed.x > 0) {
+          hero.degree += 0.5;
+        } else {
+          hero.degree -= 0.5;
+        }
       }
     }
     hero.speed.x += hero.acc.x;
@@ -471,8 +517,18 @@ function drawAll() {
   context.clearRect(0,0, 1200, 520);
   drawRocks();
   drawBlocks();
+  drawExit();
   drawHero();
   drawEnemy();
   drawCooldown();
   drawInventory();
+  drawWin();
+  drawMap();
 } 
+
+function drawExit() {
+  context.fillStyle = "orange"
+  context.fillRect(
+    exitx+(0-viewPort[0])-10,exity+(0-viewPort[1])-10, 20,20
+  );
+}

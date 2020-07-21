@@ -1,3 +1,6 @@
+const exitx = 990;
+const exity = 250;
+
 const bricks = [
 [35, 51],
 [36, 52],

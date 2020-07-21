@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+    <script src="lvl1.js">
+    </script>
+    <script src="lvl2.js">
+    </script>
+    <script src="game.js" >
+    </script>
+  </head>
+
+  <body bgcolor="black">
+    <canvas style="background:white;margin:0;padding:0;position:relative;left:50px;top:50px;" id="game" width="1200" height="520"></canvas>
+
+    <script>
+      game = document.getElementById('game');
+      context = game.getContext("2d");
+      clockTick();
+    </script>
+  </body>
+</html>
