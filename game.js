@@ -1,7 +1,10 @@
 document.onkeydown = checkKey;
 document.onkeyup = keyUp;
 
-var stage = 0;
+var stage = 1;
+var mode = 'test';
+var winx = 150
+var winy = 250
 
 var hero = {
   pos: {x: 110, y: 250},
@@ -22,11 +25,8 @@ var enemy = {
 }
 
 var blocks = Array();
-var mode = 'test';
 var viewPort = [-400,0];
 
-var winx = 150
-var winy = 250
 for(i = 0; i < 1000; i += 20) {
   for(j = 260; j < 520; j += 20) {
     blocks.push([i, j]);
@@ -38,6 +38,78 @@ for(i = 0; i < 1000; i += 20) {
 for(i = 0; i < bricks.length; i++) {
   // console.log([bricks[i][0]*20, bricks[i][1]*20])
   blocks.push([bricks[i][0]*20 - 200, bricks[i][1]*20 - 800])
+}
+
+function initLevel() {
+  if (stage == 1) {
+    hero = {
+      pos: {x: 110, y: 250},
+      speed: {x: 0, y: 0},
+      acc: {x: 0, y: 2},
+      health: 100,
+      flash: 0,
+      freezedown: 0,
+      burst: {r: 0, x: 0, y: 0},
+      degree: 0,
+    }
+    MLGbuilds = 100;
+
+    enemy = {
+      pos: {x: 750, y: 30},
+      health: 30,
+      stunned: 0,
+    }
+
+    blocks = Array();
+    viewPort = [-400,0];
+
+    for(i = 0; i < 1000; i += 20) {
+      for(j = 260; j < 520; j += 20) {
+        blocks.push([i, j]);
+      }
+    }
+
+    // console.log('bricks')
+    // console.log(bricks.length)
+    for(i = 0; i < bricks.length; i++) {
+      // console.log([bricks[i][0]*20, bricks[i][1]*20])
+      blocks.push([bricks[i][0]*20 - 200, bricks[i][1]*20 - 800])
+    }
+  } else if (stage == 2) {
+    hero = {
+      pos: {x: 110, y: 250},
+      speed: {x: 0, y: 0},
+      acc: {x: 0, y: 2},
+      health: 100,
+      flash: 0,
+      freezedown: 0,
+      burst: {r: 0, x: 0, y: 0},
+      degree: 0,
+    }
+    MLGbuilds = 100;
+
+    enemy = {
+      pos: {x: 750, y: 30},
+      health: 30,
+      stunned: 0,
+    }
+
+    blocks = Array();
+    viewPort = [-400,0];
+
+    for(i = 0; i < 1000; i += 20) {
+      for(j = 260; j < 520; j += 20) {
+        blocks.push([i, j]);
+      }
+    }
+
+    // console.log('bricks')
+    // console.log(bricks.length)
+    for(i = 0; i < bricks2.length; i++) {
+      // console.log([bricks[i][0]*20, bricks[i][1]*20])
+      blocks.push([bricks2[i][0]*20 - 200, bricks2[i][1]*20 - 800])
+    }
+  }
 }
 
 function checkKey(e) {
@@ -450,6 +522,8 @@ function clockTick() {
         (Math.abs(exitx - (hero.pos.x)) < 10) && (Math.abs(exity - (hero.pos.y)) < 10)
       ) {
         console.log('cleared level')
+        stage = 2;
+        initLevel();
     }
 
     if (hero.flash > 0) {
